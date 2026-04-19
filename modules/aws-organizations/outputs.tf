@@ -1,28 +1,34 @@
 output "organization_id" {
-  description = "AWS Organization ID"
+  description = "The ID of the AWS Organization."
   value       = aws_organizations_organization.this.id
 }
 
 output "organization_arn" {
-  description = "AWS Organization ARN"
+  description = "The ARN of the AWS Organization."
   value       = aws_organizations_organization.this.arn
 }
 
 output "root_id" {
-  description = "Root ID of the organization"
-  value       = aws_organizations_organization.this.roots[0].id
+  description = "The ID of the organization root."
+  value       = local.root_id
+}
+
+output "master_account_id" {
+  description = "The account ID of the management account."
+  value       = aws_organizations_organization.this.master_account_id
 }
 
 output "ou_ids" {
-  description = "Map of OU names to IDs"
-  value = {
-    security       = aws_organizations_organizational_unit.security.id
-    infrastructure = aws_organizations_organizational_unit.infrastructure.id
-    workloads      = aws_organizations_organizational_unit.workloads.id
-    workloads_prod = aws_organizations_organizational_unit.workloads_prod.id
-    workloads_staging = aws_organizations_organizational_unit.workloads_staging.id
-    workloads_dev  = aws_organizations_organizational_unit.workloads_dev.id
-    sandbox        = aws_organizations_organizational_unit.sandbox.id
-    suspended      = aws_organizations_organizational_unit.suspended.id
-  }
+  description = "Map of OU names to their IDs."
+  value       = local.all_ou_ids
+}
+
+output "root_level_ous" {
+  description = "Map of root-level OU names to their full resource attributes."
+  value       = aws_organizations_organizational_unit.root_level
+}
+
+output "non_root_accounts" {
+  description = "List of non-management account IDs in the organization."
+  value       = aws_organizations_organization.this.non_master_accounts
 }

@@ -10,6 +10,11 @@ provider "aws" {
   }
 }
 
+# --------------------------------------------------------------------------
+# Cross-account provider aliases for future use by AFT-provisioned modules.
+# These are configured but only activated when the corresponding role ARNs
+# are provided (i.e., after AFT vends the accounts).
+# --------------------------------------------------------------------------
 provider "aws" {
   alias  = "log_archive"
   region = var.home_region
@@ -79,69 +84,18 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "shared_services"
+  alias  = "aft_management"
   region = var.home_region
 
   assume_role {
-    role_arn = var.shared_services_role_arn
+    role_arn = var.aft_management_role_arn
   }
 
   default_tags {
     tags = {
       ManagedBy   = "Terraform"
       Project     = "AWS-Landing-Zone"
-      Environment = "shared-services"
-    }
-  }
-}
-
-provider "aws" {
-  alias  = "prod"
-  region = var.home_region
-
-  assume_role {
-    role_arn = var.prod_role_arn
-  }
-
-  default_tags {
-    tags = {
-      ManagedBy   = "Terraform"
-      Project     = "AWS-Landing-Zone"
-      Environment = "prod"
-    }
-  }
-}
-
-provider "aws" {
-  alias  = "staging"
-  region = var.home_region
-
-  assume_role {
-    role_arn = var.staging_role_arn
-  }
-
-  default_tags {
-    tags = {
-      ManagedBy   = "Terraform"
-      Project     = "AWS-Landing-Zone"
-      Environment = "staging"
-    }
-  }
-}
-
-provider "aws" {
-  alias  = "dev"
-  region = var.home_region
-
-  assume_role {
-    role_arn = var.dev_role_arn
-  }
-
-  default_tags {
-    tags = {
-      ManagedBy   = "Terraform"
-      Project     = "AWS-Landing-Zone"
-      Environment = "dev"
+      Environment = "aft-management"
     }
   }
 }
